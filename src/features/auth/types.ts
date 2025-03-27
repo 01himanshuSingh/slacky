@@ -1,0 +1,1 @@
+export type Signflow = 'signIn'| 'signUp';
