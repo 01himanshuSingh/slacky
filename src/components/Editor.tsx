@@ -4,11 +4,12 @@ import type { Delta, QuillOptionsStatic } from "quill";
 import { PiTextAa } from "react-icons/pi";
 import "quill/dist/quill.snow.css"; // Ensure this path is correct
 import { Button } from "./ui/button";
-import { ImageIcon, Smile } from "lucide-react";
+import { ImageIcon, Smile, XIcon } from "lucide-react";
 import { MdSend } from "react-icons/md";
 import Hint from "./Hint";
 import { list } from "postcss";
 import { Emojipoper } from "./EmojiProper";
+import Image from "next/image";
 
 interface EditorProps {
   variant?: "create" | "update";
@@ -20,7 +21,7 @@ interface EditorProps {
 }
 
 type EditorValue = {
-  image: File | null;
+  image: any;
   body: string;
 };
 
@@ -32,7 +33,7 @@ export default function Editor({
   defaultValue = {} as Delta,
   disabled = false,
 }: EditorProps) {
-
+const [image, setImage] = useState<File|null>(null)
   const [isToolbarVisible, setToolbarVisible] = useState(false)
   const [text, setText] = useState(""); // State to store text content
   const submitRef = useRef(onSubmit);
@@ -41,6 +42,8 @@ export default function Editor({
   const defaultValueRef = useRef(defaultValue);
   const disableRef = useRef(disabled);
   const containerRef = useRef<HTMLDivElement>(null);
+  const imageElement =  useRef<HTMLInputElement>(null)
+ 
 
   useLayoutEffect(() => {
     submitRef.current = onSubmit;
@@ -109,7 +112,7 @@ export default function Editor({
   // Function to handle submit
   const handleSend = () => {
     console.log("Textxx:", text); // ✅ Print text value in console
-    submitRef.current({ image: null, body: text }); // ✅ Send text to onSubmit
+    submitRef.current({ image, body: text }); // ✅ Send text to onSubmit
   };
 
   const toggleToolbar = ()=>{
@@ -120,11 +123,43 @@ export default function Editor({
     }
   }
 
-  
+  const onEmojiselect = (emoji:any)=>{
+    const quill = quilRef.current
+    quill?.insertText(quill?.getSelection()?.index || 0, emoji.native)
+}
+
   return (
     <div className="flex flex-col px-4">
+      <input type="file" accept="image/*" 
+      ref={imageElement}
+      onChange={(event)=>{setImage(event.target.files![0])}}
+      className="hidden"
+      />
       <div className="flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-500 focus-within:shadow-sm transition bg-white p-2">
         <div ref={containerRef} className="h-full" />
+        {
+          !!image && (
+            <div className="p-2">
+                  <div className="relative size-[62px] flex items-center justify-center group">
+                 <Hint label="remove">
+                  <button
+                  onClick={()=>{
+                    setImage(null)
+                    imageElement.current!.value= ''
+                  }}
+                 
+  className="items-end top-[-2px] rounded-xl  absolute right-[-17px] size-6 z-[4] border-2 border-white"
+
+                  ><XIcon/></button></Hint>
+                 <Image src={URL.createObjectURL(image)}
+                  alt="Upload"
+                  fill
+                    className=" rounded-xl overflow-hidden border object-cover"
+                  />
+                  </div>
+            </div>
+          )
+        }
         <div className="flex px-2 pb-2 z-[5]">
           <Hint label="Hide formatting">
             <Button disabled={disabled} size="iconsm" variant="ghost" 
@@ -132,14 +167,14 @@ export default function Editor({
               <PiTextAa />
             </Button>
           </Hint>
-          <Emojipoper onEmojiSelect={()=>{}}>
+          <Emojipoper onEmojiSelect={onEmojiselect}>
             <Button disabled={disabled} size="iconsm" variant="ghost">
               <Smile />
             </Button>
             </Emojipoper>
           {variant === "create" && (
             <Hint label="Photos">
-              <Button disabled={disabled} size="iconsm" variant="ghost">
+              <Button disabled={disabled} size="iconsm" variant="ghost" onClick={() => imageElement.current?.click()}>
                 <ImageIcon />
               </Button>
             </Hint>
@@ -153,7 +188,10 @@ export default function Editor({
               <Button
                 size="sm"
                 disabled={disabled}
-                onClick={handleSend}
+                onClick={()=>{onSubmit({body:JSON.stringify(quilRef.current?.getContents()),
+                  image
+                })}}
+
                 className="ml-auto bg-[#007a5a] hover:bg-[#007a5a]/80 text-white pb-2"
               >
                 Save
@@ -167,7 +205,9 @@ export default function Editor({
                 size="iconsm"
                 className="ml-auto bg-[#007a5a] hover:bg-[#007a5a]/80 text-white pb-2"
                 disabled={false}
-                onClick={handleSend}
+                onClick={()=>{onSubmit({body:JSON.stringify(quilRef.current?.getContents()),
+                  image
+                })}}
               >
                 <MdSend className="size-4" />
               </Button>
