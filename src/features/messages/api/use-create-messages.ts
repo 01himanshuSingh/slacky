@@ -8,7 +8,7 @@ type RequestType = { body:string, image?:Id<"_storage">,
     channelId?:Id<"channels">,
     parentMessageId?:Id<"messages">,
     conversationId?:Id<'conversations'>
-};
+    };
 type ResonseType = Id<"messages">| null;
 type Options={
     onSuccess?: (data:ResonseType)=>void;

@@ -16,7 +16,7 @@ return ctx.db.get(userId);
 
 const populateReaction = (ctx:QueryCtx, messageId:Id<'messages'>)=>{
         return ctx.db.query('reactions').withIndex('by_message_id',(q)=>q.eq('messageId',messageId)).collect();
-}
+} 
 
 const populateThread = async(ctx:QueryCtx, messageId:Id<'messages'>)=>{
     const messages = await ctx.db.query('messages').withIndex('by_parent_message_id',(q)=>q.eq('parentMessageId', messageId))
@@ -94,19 +94,35 @@ export const create = mutation({
     },
 })
 
-// export const get= query({
-//     args:{
-//         channelId:v.optional(v.id('channels')),
-//         conversationId:v.optional(v.id('conversations')),
-//         parentMessageId:v.optional(v.id('messages')),
-//         paginationOptions:paginationOptsValidator
-//     },
-//     handler:async(ctx, args)=> {
-//         const userId = await getAuthUserId(ctx);  // apne user auth id 
-//         if(!userId){
-//     throw new Error('user Unauthorized')
-//         }
-//         let _conversationId = args.conversationId;
-        
-//     },
-// })
+export const get= query({
+    args:{
+        channelId:v.optional(v.id('channels')),
+        conversationId:v.optional(v.id('conversations')),
+        parentMessageId:v.optional(v.id('messages')),
+        paginationOptions:paginationOptsValidator
+    },
+    handler:async(ctx, args)=> {
+        const userId = await getAuthUserId(ctx);  // apne user auth id 
+        if(!userId){
+    throw new Error('user Unauthorized')
+        }
+        let _conversationId = args.conversationId;
+        if(!args.conversationId && args.channelId && args.parentMessageId){
+            const parentMessage = await ctx.db.get(args.parentMessageId);       
+            if(!parentMessage){
+                throw new Error('parent message not found')
+            }
+            _conversationId  = parentMessage.conversationId
+        }
+        const results = await ctx.db.query('messages')
+        .withIndex('by_channel_parentid_messageid_conversationid', (q):any => {
+           q
+            .eq('channelId', args.channelId)
+            .eq('conversationId', _conversationId)
+            .eq('parentMessageId', args.parentMessageId); 
+        })
+        .order('desc')
+        .paginate(args.paginationOptions);
+return results
+    },
+})
