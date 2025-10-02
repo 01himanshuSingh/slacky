@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/middleware.js", "convex/users.js", "src/features/auth/component/Userbutton.tsx", "src/features/auth/component/Userbutton2.jsx", "src/app/workspace/[workspaceId]/channel/[channelId]/ChatInput.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/middleware.js", "convex/users.js", "src/features/auth/component/Userbutton.tsx", "src/features/auth/component/Userbutton2.jsx", "src/app/workspace/[workspaceId]/channel/[channelId]/ChatInput.tsx", "src/features/messages/api/usegetmessages.js"],
   "exclude": ["node_modules"]
 }

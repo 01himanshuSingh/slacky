@@ -7,6 +7,7 @@ import "./globals.css";
 import Model from "@/components/Model";
 import { Toaster } from "@/components/ui/sonner";
 import Jotai from "@/components/JotaiProvider";
+import { Providersnqus } from "./Provider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,7 +33,8 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      ><Providersnqus>
+
        <ConvexClientProvider> 
         <Jotai > {/** Jotai apna synhronously share krega sab ko  */}
        <Model/>   
@@ -40,6 +42,7 @@ export default function RootLayout({
         {children} 
         </Jotai>
         </ConvexClientProvider>
+      </Providersnqus>
       </body>
     </html>
     </ConvexAuthNextjsServerProvider>

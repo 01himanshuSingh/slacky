@@ -8,10 +8,16 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Header from './Header'
 import ChatInput from './ChatInput'
+import { useGetMessages } from '@/features/messages/api/usegetmessages'
+import { json } from 'stream/consumers'
+import MessageList from '@/components/MessageList'
 
 
 export default function page() {
   const channelId = useChannelId()
+  const {results}:any = useGetMessages({ channelId })
+    console.log(results)
+
   const {data:channel, isLoading:channelisLoading} = usegetSingleChannels({id:channelId})
   if (channelisLoading) {
     return (
@@ -42,7 +48,16 @@ export default function page() {
     <div className='flex flex-col h-full'>
 
     <Header name={channel.name}/>
-    <div className='flex-1 '/>
+    <div className=''/>
+ <MessageList 
+  data={results || []}
+  isLoading={results.length === 0}
+  memberName={channel?.name}
+  memberImage={results.length > 0 ? results[0].memberImage : ''}
+  channelName={channel.name}
+  channelcreatedAt={channel._creationTime}
+  
+ />
       <ChatInput placeholder=' write there.. '/>
     </div>
     
