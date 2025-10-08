@@ -102,9 +102,7 @@ export const get = query({
   }),
 
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) throw new Error('User unauthorized');
-
+   
     let _conversationId = args.conversationId;
 
     if (!args.conversationId && args.channelId && args.parentMessageId) {

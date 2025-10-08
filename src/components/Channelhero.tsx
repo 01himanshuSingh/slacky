@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Channelhero({name, createdAt}: {name?: string, createdAt?: Date}) {
+function Channelhero({name = 'channel', createdAt}: {name?: string, createdAt?: Date}) {
   return (
     <div className='mt-[88px] mx-5 mb-4'>
         <p className='text-2xl font-bold flex items-center mb-2'>

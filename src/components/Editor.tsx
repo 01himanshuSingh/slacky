@@ -13,11 +13,11 @@ import Image from "next/image";
 
 interface EditorProps {
   variant?: "create" | "update";
-  onSubmit: ({ image, body }: EditorValue) => void;
-  onCanel: () => void;
+  onSubmit?: ({ image, body }: EditorValue) => void;
+  onCanel?: () => void;
   placeholder?: string;
   defaultValue?: Delta;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 type EditorValue = {

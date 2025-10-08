@@ -6,13 +6,14 @@ import Message from './Message';
 import Channelhero from './Channelhero';
 import { useWorkspaceId } from '@/hook/useWorkspaceid';
 import { userCurrentMember } from '@/features/members/api/userCurrentMember';
+import Conversationhero from './Conversationhero';
 
 interface MessageListProps {
   memberName?: string;
   memberImage?: string;
   channelName?: string;
   channelcreatedAt?: any;
-  variant?: 'default' | 'channel' | 'thread';
+  variant?: 'default' | 'channel' | 'thread'|'conversation';
   data: any;
   isLoading?: boolean;
 }
@@ -28,7 +29,7 @@ function MessageList({
 }: MessageListProps) {
   // ✅ Ensure data is always an array
   const messagesArray = Array.isArray(data) ? data : [];
-  const [editingId, setEditingId]=  useState<any>(null);
+  const [editingId, setEditingId]=  useState<any>();
   const workspaceId = useWorkspaceId()
   const {data:currenmember} = userCurrentMember({workspaceId});
   // ✅ Group messages by date
@@ -105,6 +106,12 @@ function MessageList({
         <Channelhero 
         name={channelName}
         createdAt={channelcreatedAt}
+        />
+      )}
+       {variant === 'conversation' && memberName && memberImage && (
+        <Conversationhero
+        name={memberName}
+        image={memberImage}
         />
       )}
     </div>

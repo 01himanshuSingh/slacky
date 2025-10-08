@@ -14,24 +14,33 @@ function Render({ value }: RenderProps) {
 
     const quill = new Quill(tempDiv, {
       theme: 'snow',
-      readOnly: true, // safer than calling enable(false)
+      readOnly: true,
       modules: {
         toolbar: false,
       },
     });
 
     try {
-      const contents = JSON.parse(value);
-      quill.setContents(contents);
+      if (!value) {
+        setIsEmpty(true);
+        return;
+      }
 
-      const isEmpty = quill.getText().replace(/\n/g, '').trim().length === 0;
-      setIsEmpty(isEmpty);
+      const parsed =
+        typeof value === 'string' ? JSON.parse(value) : value;
+
+      quill.setContents(parsed);
+
+      const empty =
+        quill.getText().replace(/\n/g, '').trim().length === 0;
+      setIsEmpty(empty);
 
       if (renderRef.current) {
         renderRef.current.innerHTML = quill.root.innerHTML;
       }
     } catch (err) {
       console.error('Invalid content format:', err);
+      setIsEmpty(true);
     }
 
     return () => {

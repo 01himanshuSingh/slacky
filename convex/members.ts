@@ -63,3 +63,36 @@ export const get = query({
 const populateUser =(ctx:QueryCtx, id:Id<'users'>)=>{
    return ctx.db.get(id);
 }
+
+
+export const getById = query({
+   args:{memberId:v.id('members')},
+   handler:async(ctx, args)=>{
+
+       const userId = await getAuthUserId(ctx);  // apne user auth id 
+      if(!userId){
+         return null;
+      }
+      const member = await ctx.db.get(args.memberId);
+      if(!member){
+         return null;
+      }
+     
+      const currentMember = await ctx.db
+      .query('members')
+      .withIndex("by_workspace_id_by_user_id",(q)=>q.eq('userId', userId).eq('workspaceId', member.workspaceId),)
+      .unique();
+      if(!currentMember){
+         return null;
+      }
+     
+      const user = await populateUser(ctx, member.userId);
+      if(!user){
+         return null;
+      }
+      return {
+         ...member,
+         user,
+      }
+   }
+}) 

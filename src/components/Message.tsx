@@ -24,12 +24,7 @@ interface MessageProps {
   authorImage?: string;
   authorName?: string;
   isAuthor?: boolean;
-  reactions: Array<
-    Omit<Doc<"reactions">, "memberId"> & {
-      count: number;
-      memberIds: Id<"members">[];
-    }
-  >;
+  reactions: any
   body: any;
   image: any;
   createdAt: any;

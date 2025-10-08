@@ -13,8 +13,10 @@ import { userGetMember } from '@/features/members/api/useGetMebers';
 import UserItems from './UserItems';
 import { useCreateChannelModal } from '@/features/channels/store/useCreateChannelModel';
 import { useChannelId } from '@/hook/useChannelId';
+import { useMemberId } from '@/hook/useMemberId';
 
 function WorkspaceSlider() {
+  const memberId = useMemberId()
   const channelId = useChannelId();
   const workspaceId = useWorkspaceId();
   const [_open , setopen] = useCreateChannelModal();
@@ -63,7 +65,7 @@ function WorkspaceSlider() {
       {/* Members Section */}
       <WorkspaceSecton label='Direct messages ' hint='start new messages ' onNew={() => {}}>
         {members?.map((items) => (
-          <UserItems key={items._id} id={items._id} label={items.user.name} image={items.user.image} />
+          <UserItems key={items._id} id={items._id} label={items.user.name} image={items.user.image} variant={items._id === memberId ?'active':'default'} />
         ))}
       </WorkspaceSecton>
     </div>
