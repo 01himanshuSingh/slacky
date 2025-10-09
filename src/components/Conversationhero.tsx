@@ -5,7 +5,7 @@ function Conversationhero({name ='member ', image}: {name?: string, image?:any})
   return (
     <div className='mt-[88px] mx-5 mb-4'>
         <div className='flex items-center gap-x-1 mb-1'>
-            <Avatar className='size-7 rounded-md mr-1'>
+            <Avatar className='size-12 rounded-md mr-1'>
                <AvatarImage className='rounded-md ' src={image} />
                 <AvatarFallback className='rounded-md bg-sky-500 text-white text-xs'>
                     {name?.charAt(0)}

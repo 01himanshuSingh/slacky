@@ -14,6 +14,7 @@ import { deserialize } from 'v8';
 import { useToggleReactions } from '@/features/reactions/api/use-toggle-reaction';
 import Reaction from './Reaction';
 import { usePanel } from '@/hook/usePanel';
+import ThreadBar from './ThreadBar';
 
 const Render = dynamic(() => import('@/components/Render'), { ssr: false });
 const Editor = dynamic(() => import('@/components/Editor'), { ssr: false });
@@ -128,6 +129,7 @@ const handleReaction = (value:string)=>{
           <Thumbnail url={image} />
           {updatedAt && <div className="text-xs text-muted-foreground">(edited)</div>}
           <Reaction data={reactions} onchange={handleReaction}/>
+          <ThreadBar count={threadcount} image={threadImage} timestamp={threadImagestamp} />
         </>
       )}
 
