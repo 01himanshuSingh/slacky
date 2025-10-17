@@ -129,7 +129,7 @@ const handleReaction = (value:string)=>{
           <Thumbnail url={image} />
           {updatedAt && <div className="text-xs text-muted-foreground">(edited)</div>}
           <Reaction data={reactions} onchange={handleReaction}/>
-          <ThreadBar count={threadcount} image={threadImage} timestamp={threadImagestamp} />
+          <ThreadBar count={threadcount} image={threadImage} timestamp={threadImagestamp} onClick={()=>onOpenMessage(id)}/>
         </>
       )}
 
