@@ -1,7 +1,7 @@
 import React from 'react'
 import { Doc, Id } from '../../convex/_generated/dataModel';
 import { useWorkspaceId } from '@/hook/useWorkspaceid';
-import { userCurrentMember } from '@/features/members/api/userCurrentMember';
+import { useCurrentMember } from '@/features/members/api/userCurrentMember';
 
 import { cn } from '@/lib/utils';
 import Hint from './Hint';
@@ -20,7 +20,7 @@ interface ReactionProps {
 
 function Reaction({data, onchange}:ReactionProps) {
   const workspaceId  = useWorkspaceId()
-  const {data:currentMember} = userCurrentMember({workspaceId});
+  const {data:currentMember} = useCurrentMember({workspaceId});
   if(data.length === 0 || !currentMember) return null;
     return (
     <div >{data.map((reaction)=>[

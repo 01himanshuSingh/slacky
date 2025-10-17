@@ -1,5 +1,5 @@
 
-import { userCurrentMember } from '@/features/members/api/userCurrentMember';
+import { useCurrentMember } from '@/features/members/api/userCurrentMember';
 import { usesingleGetWorkspace } from '@/features/workspaces/api/usegetsingleworkspaces';
 import { useGetWorkspaces } from '@/features/workspaces/api/usegetworkspaces';
 import { useWorkspaceId } from '@/hook/useWorkspaceid';
@@ -21,7 +21,7 @@ function WorkspaceSlider() {
   const workspaceId = useWorkspaceId();
   const [_open , setopen] = useCreateChannelModal();
   const { data: channels, isLoading: channelsLoading } = usegetChannels({ workspaceId });
-  const { data: member, isLoading: memberLoading } = userCurrentMember({ workspaceId });
+  const { data: member, isLoading: memberLoading } = useCurrentMember({ workspaceId });
   const { data: workspace, isLoading: workspaceLoading } = usesingleGetWorkspace({ id: workspaceId });
   const { data: members, isLoading: membersLoading } = userGetMember({ workspaceId });
 

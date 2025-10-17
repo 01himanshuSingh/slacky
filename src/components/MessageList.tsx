@@ -5,7 +5,7 @@ import { differenceInMinutes, format, isToday, isTomorrow } from 'date-fns';
 import Message from './Message';
 import Channelhero from './Channelhero';
 import { useWorkspaceId } from '@/hook/useWorkspaceid';
-import { userCurrentMember } from '@/features/members/api/userCurrentMember';
+import { useCurrentMember } from '@/features/members/api/userCurrentMember';
 import Conversationhero from './Conversationhero';
 
 interface MessageListProps {
@@ -31,7 +31,7 @@ function MessageList({
   const messagesArray = Array.isArray(data) ? data : [];
   const [editingId, setEditingId]=  useState<any>();
   const workspaceId = useWorkspaceId()
-  const {data:currenmember} = userCurrentMember({workspaceId});
+  const {data:currenmember} = useCurrentMember({workspaceId});
   // ✅ Group messages by date
   const groupmessages = messagesArray.reduce((groups: Record<string, any[]>, message: any) => {
     const createdDate = new Date(message._creationTime);

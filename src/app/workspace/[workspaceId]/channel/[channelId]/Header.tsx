@@ -19,7 +19,7 @@ import { toast } from 'sonner'
 import { useRemoveChannel } from '@/features/channels/api/useRemoveChannel'
 import { useRouter } from 'next/navigation'
 import { useWorkspaceId } from '@/hook/useWorkspaceid'
-import { userCurrentMember } from '@/features/members/api/userCurrentMember'
+import { useCurrentMember } from '@/features/members/api/userCurrentMember'
 interface HeaderProps {
   name: string;
 }
@@ -31,7 +31,7 @@ export default function Header({ name }: HeaderProps) {
   
   const [value, setValue] = useState(name);
   const [editOpen, setEditOpen] = useState(false);
-  const { data: member } = userCurrentMember({ workspaceId }); // FIXED NAME
+  const { data: member } = useCurrentMember({ workspaceId }); // FIXED NAME
 
   const { mutate: updateChannel, isPending: channelUpdating } = useUpdateChannel();
   const { mutate: removeChannel, isPending: channelRemoving } = useRemoveChannel();

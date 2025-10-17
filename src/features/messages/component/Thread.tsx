@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react'
 import { usegetmessage } from '../api/usegetmessage';
 import Message from '@/components/Message';
 import dynamic from 'next/dynamic'
-import { userCurrentMember } from '@/features/members/api/userCurrentMember';
+import { useCurrentMember } from '@/features/members/api/userCurrentMember';
 
 import { useWorkspaceId } from '@/hook/useWorkspaceid';
 import Quill from 'quill';
@@ -55,7 +55,7 @@ function Thread({messageId, onClose}:ThreadProps) {
 
   const [editingId , setEditingId] = useState<any>()
 
-  const {data: currentMember} = userCurrentMember({workspaceId})
+  const {data: currentMember} = useCurrentMember({workspaceId})
    const {data:message , isLoading}=  usegetmessage({id:messageId});
    const {results, loading}= useGetMessages({channelId, parentMessageId:messageId})
    if(isLoading){

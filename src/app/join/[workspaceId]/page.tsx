@@ -4,7 +4,7 @@ import { usesingleGetWorkspaceInfo } from '@/features/workspaces/api/usegetsingl
 import { useJoin } from '@/features/workspaces/api/useJoin';
 import { useWorkspaceId } from '@/hook/useWorkspaceid';
 import { HashIcon, Loader } from 'lucide-react'
-import Image from 'next/image'
+
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo } from 'react'
@@ -18,7 +18,7 @@ import { toast } from 'sonner';
 
 // }
 
-export default function page() {
+export default function Page() {
     const router = useRouter();
   const workspaceId = useWorkspaceId();
   const {data, isLoading} = usesingleGetWorkspaceInfo({id:workspaceId})

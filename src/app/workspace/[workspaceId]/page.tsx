@@ -2,7 +2,7 @@
 
 import { usegetChannels } from '@/features/channels/api/usegetChannels';
 import { useCreateChannelModal } from '@/features/channels/store/useCreateChannelModel';
-import { userCurrentMember } from '@/features/members/api/userCurrentMember';
+import { useCurrentMember } from '@/features/members/api/userCurrentMember';
 import { usesingleGetWorkspace } from '@/features/workspaces/api/usegetsingleworkspaces';
 import { useWorkspaceId } from '@/hook/useWorkspaceid';
 import { Loader, TriangleAlert } from 'lucide-react';
@@ -11,7 +11,7 @@ import React, { useEffect, useMemo } from 'react'
 
 export default function Page() {
     const workspaceId = useWorkspaceId();
-    const {data:member, isLoading:memberisLoading} = userCurrentMember({workspaceId})
+    const {data:member, isLoading:memberisLoading} = useCurrentMember({workspaceId})
     const router = useRouter();
     const [open, setOpen]  = useCreateChannelModal(); // Correct destructuring
     
